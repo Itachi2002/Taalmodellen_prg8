@@ -2,9 +2,17 @@ import { ChatOpenAI } from "@langchain/openai"
 import { HumanMessage, AIMessage, SystemMessage } from "@langchain/core/messages"
 import { OpenAIEmbeddings } from "@langchain/openai"
 import { MemoryVectorStore } from "langchain/vectorstores/memory"
-import { TextLoader } from "langchain/document_loaders/fs/text"
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter"
+import fs from 'fs'
 import path from 'path'
+import { fileURLToPath } from 'url'
+
+// Get current directory
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+// Load training data
+const trainingData = fs.readFileSync(path.join(__dirname, '..', 'data', 'voetbaltraining_jeugdspelers.txt'), 'utf8')
 
 // Initialize embeddings
 const embeddings = new OpenAIEmbeddings({
@@ -13,6 +21,22 @@ const embeddings = new OpenAIEmbeddings({
     azureOpenAIApiDeploymentName: process.env.AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME,
     azureOpenAIApiVersion: process.env.AZURE_OPENAI_API_VERSION
 })
+
+// Split the document into chunks
+const textSplitter = new RecursiveCharacterTextSplitter({
+    chunkSize: 1000,
+    chunkOverlap: 200
+})
+
+// Create document chunks
+const docs = [{
+    pageContent: trainingData,
+    metadata: { source: 'voetbaltraining_jeugdspelers.txt' }
+}]
+const splits = await textSplitter.splitDocuments(docs)
+
+// Create vector store
+const vectorStore = await MemoryVectorStore.fromDocuments(splits, embeddings)
 
 // Initialize chat model
 const model = new ChatOpenAI({
@@ -40,12 +64,19 @@ export default async function handler(req, res) {
         // Add user message to history
         chatHistory.push(new HumanMessage(prompt))
         
+        // Retrieve relevant document chunks
+        const relevantDocs = await vectorStore.similaritySearch(prompt, 3)
+        const context = relevantDocs.map(doc => doc.pageContent).join('\n\n')
+        
         // Set headers for streaming
         res.setHeader('Content-Type', 'text/plain')
         res.setHeader('Transfer-Encoding', 'chunked')
         
-        // Get streaming response from model
-        const stream = await model.stream([...chatHistory])
+        // Get streaming response from model with context
+        const stream = await model.stream([
+            ...chatHistory,
+            new SystemMessage(`Hier is relevante context uit de handleiding:\n${context}`)
+        ])
         
         let fullResponse = ''
         let currentWord = ''
