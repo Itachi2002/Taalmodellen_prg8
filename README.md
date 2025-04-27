@@ -1,36 +1,54 @@
-# AI Chat Application
+# VoetbalGPT - Je Persoonlijke Voetbaltrainer
 
-A simple chat application that uses Azure OpenAI to generate responses.
+Een AI-gestuurde chatapplicatie gespecialiseerd in jeugdvoetbaltraining, met geïntegreerde weersinformatie.
 
-## Project Structure
+## Functionaliteiten
+
+- Chatinterface voor voetbaltraining vragen
+- Real-time weersinformatie voor Amsterdam
+- Contextbewuste antwoorden gebaseerd op een uitgebreide voetbaltraining handleiding
+- Streaming responses voor vloeiende interactie
+- Moderne en responsieve UI
+
+## Project Structuur
 
 ```
 .
-├── CLIENT/              # Frontend files
-│   ├── index.html      # Main HTML file
-│   ├── style.css       # CSS styles
-│   └── script.js       # Frontend JavaScript
-└── SERVER/             # Backend files
-    ├── server.js       # Express server
-    ├── .env           # Environment variables (not in git)
-    └── package.json   # Node.js dependencies
+├── CLIENT/                    # Frontend bestanden
+│   ├── index.html            # Hoofdpagina
+│   ├── style.css             # CSS styling
+│   ├── script.js             # Frontend JavaScript
+│   ├── assets/              # Afbeeldingen en media
+│   └── package.json         # Frontend dependencies
+└── SERVER/                   # Backend bestanden
+    ├── server.js            # Express server met AI en weer integratie
+    ├── data/                # Training data
+    │   └── voetbaltraining_jeugdspelers.txt
+    ├── .env                 # Environment variables (niet in git)
+    └── package.json        # Backend dependencies
 ```
 
-## Installation
+## Installatie
 
-1. Clone the repository:
+1. Clone de repository:
 ```bash
-git clone [your-repository-url]
+git clone [repository-url]
 cd [repository-name]
 ```
 
-2. Install dependencies:
+2. Installeer backend dependencies:
 ```bash
 cd SERVER
 npm install
 ```
 
-3. Create a `.env` file in the SERVER directory with your Azure OpenAI credentials:
+3. Installeer frontend dependencies:
+```bash
+cd ../CLIENT
+npm install
+```
+
+4. Maak een `.env` bestand in de SERVER directory met je Azure OpenAI credentials:
 ```
 AZURE_OPENAI_API_VERSION=2025-03-01-preview
 AZURE_OPENAI_API_INSTANCE_NAME=cmgt-ai
@@ -39,25 +57,43 @@ AZURE_OPENAI_API_DEPLOYMENT_NAME=deploy-gpt-35-turbo
 AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME=deploy-text-embedding-ada
 ```
 
-## Running the Application
+## De Applicatie Starten
 
-1. Start the backend server:
+1. Start de backend server:
 ```bash
 cd SERVER
 npm run dev
 ```
 
-2. Start the frontend server:
+2. Start de frontend development server:
 ```bash
 cd CLIENT
-python3 -m http.server 8000
+npm run dev
 ```
 
-3. Open your browser and go to http://localhost:8000
+3. Open je browser en ga naar http://localhost:3000
 
-## Issues
+## Features
 
-- Make sure you have Node.js installed
-- Make sure you have Python installed
-- Make sure your Azure OpenAI credentials are correct
-- Make sure both servers are running (frontend and backend)
+- **AI Chat**: Stel vragen over voetbaltraining en ontvang expert advies
+- **Weer Integratie**: Real-time weerinformatie voor Amsterdam
+- **Contextbewust**: Antwoorden gebaseerd op professionele voetbaltraining handleiding
+- **Streaming Responses**: Vloeiende, natuurlijke antwoorden
+- **Responsive Design**: Werkt op alle apparaten
+
+## Technische Details
+
+- Frontend: HTML5, CSS3, JavaScript (Vite)
+- Backend: Node.js, Express
+- AI: Azure OpenAI, LangChain
+- Weer API: Open-Meteo
+- Vector Store: LangChain Memory Vector Store
+- Document Processing: LangChain Text Splitter
+
+## Troubleshooting
+
+- Zorg dat Node.js geïnstalleerd is
+- Controleer of alle dependencies correct zijn geïnstalleerd
+- Verifieer je Azure OpenAI credentials
+- Zorg dat beide servers draaien (frontend en backend)
+- Check de console voor eventuele error messages
