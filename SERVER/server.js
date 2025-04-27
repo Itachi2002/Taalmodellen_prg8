@@ -60,6 +60,9 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+// Serve static files from the CLIENT/dist directory
+app.use(express.static(path.join(__dirname, '..', 'CLIENT', 'dist')))
+
 // Weather API configuration
 const WEATHER_API_URL = 'https://api.open-meteo.com/v1/forecast'
 
@@ -139,7 +142,7 @@ function getWeatherDescription(code) {
 }
 
 // Weather endpoint
-app.get('/weather', async (req, res) => {
+app.get('/api/weather', async (req, res) => {
     try {
         const weatherData = await getWeatherData();
         res.json(weatherData);
@@ -149,8 +152,8 @@ app.get('/weather', async (req, res) => {
     }
 });
 
-// Single endpoint for chat
-app.post('/', async (req, res) => {
+// Chat endpoint
+app.post('/api/chat', async (req, res) => {
     const prompt = req.body.prompt
     console.log("The user asked for: " + prompt)
     
@@ -229,7 +232,13 @@ app.post('/', async (req, res) => {
     }
 })
 
+// Serve the main page for all other routes
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'CLIENT', 'dist', 'index.html'));
+});
+
 // Helper function to add delay
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
-app.listen(3000, () => console.log('VoetbalGPT server running on http://localhost:3000')) 
+const port = process.env.PORT || 3000
+app.listen(port, () => console.log(`VoetbalGPT server running on http://localhost:${port}`)) 

@@ -25,7 +25,7 @@ function updateWeatherDisplay(weatherData) {
 // Fetch weather on page load
 async function fetchWeather() {
     try {
-        const response = await fetch('http://localhost:3000/weather')
+        const response = await fetch('/api/weather')
         const weatherData = await response.json()
         updateWeatherDisplay(weatherData)
     } catch (error) {
@@ -58,7 +58,7 @@ form.addEventListener('submit', async (e) => {
         messagesContainer.appendChild(aiMessageDiv)
         
         // Make the streaming request
-        const response = await fetch('http://localhost:3000/', {
+        const response = await fetch('/api/chat', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
