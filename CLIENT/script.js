@@ -7,7 +7,7 @@ const weatherInfo = document.getElementById('weather-info')
 // Get the base URL for API calls
 const API_BASE_URL = window.location.hostname === 'localhost' 
     ? 'http://localhost:3000' 
-    : ''
+    : window.location.origin
 
 // Function to update weather display
 function updateWeatherDisplay(weatherData) {
