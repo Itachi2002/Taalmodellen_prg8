@@ -30,7 +30,7 @@ function updateWeatherDisplay(weatherData) {
 // Fetch weather on page load
 async function fetchWeather() {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/weather`)
+        const response = await fetch(`${API_BASE_URL}/weather`)
         const weatherData = await response.json()
         updateWeatherDisplay(weatherData)
     } catch (error) {
