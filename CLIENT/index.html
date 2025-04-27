@@ -1,20 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Chat</title>
+    <title>VoetbalGPT - Je Persoonlijke Voetbaltrainer</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>AI Chat</h1>
-        <div id="chat-container">
-            <div id="messages"></div>
+        <header class="header">
+            <h1>VoetbalGPT ⚽</h1>
+            <p>Je persoonlijke AI-voetbaltrainer voor jeugdspelers</p>
+        </header>
+
+        <div id="weather-info" class="weather-info">
+            <!-- Weather info will be inserted here -->
         </div>
+
+        <div id="messages"></div>
+
         <form id="chat-form">
-            <input type="text" id="chatfield" placeholder="Type your question here..." required>
-            <button type="submit" id="submit-btn">Send</button>
+            <input type="text" id="chatfield" placeholder="Stel je vraag over voetbaltraining..." autocomplete="off">
+            <button type="submit" id="submit-btn">Vraag</button>
         </form>
     </div>
     <script src="script.js"></script>
