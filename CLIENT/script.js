@@ -4,11 +4,6 @@ const messagesContainer = document.getElementById('messages')
 const submitBtn = document.getElementById('submit-btn')
 const weatherInfo = document.getElementById('weather-info')
 
-// Get the base URL for API calls
-const API_BASE_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:3000' 
-    : window.location.origin
-
 // Function to update weather display
 function updateWeatherDisplay(weatherData) {
     if (weatherData) {
@@ -30,7 +25,7 @@ function updateWeatherDisplay(weatherData) {
 // Fetch weather on page load
 async function fetchWeather() {
     try {
-        const response = await fetch(`${API_BASE_URL}/weather`)
+        const response = await fetch('http://localhost:3000/weather')
         const weatherData = await response.json()
         updateWeatherDisplay(weatherData)
     } catch (error) {
@@ -63,7 +58,7 @@ form.addEventListener('submit', async (e) => {
         messagesContainer.appendChild(aiMessageDiv)
         
         // Make the streaming request
-        const response = await fetch(`${API_BASE_URL}/api/chat`, {
+        const response = await fetch('http://localhost:3000/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -102,7 +97,7 @@ form.addEventListener('submit', async (e) => {
         }
     } catch (error) {
         console.error('Error:', error)
-        addMessage('Sorry, er is iets misgegaan. Probeer het opnieuw.', 'ai')
+        addMessage('Sorry, something went wrong. Please try again.', 'ai')
     } finally {
         submitBtn.disabled = false
     }
