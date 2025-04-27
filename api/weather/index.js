@@ -63,7 +63,7 @@ export default async function handler(req, res) {
             params: {
                 latitude: AMSTERDAM_LAT,
                 longitude: AMSTERDAM_LON,
-                current_weather: true,
+                current: true,
                 temperature_unit: 'celsius',
                 windspeed_unit: 'ms',
                 timezone: 'Europe/Amsterdam'
@@ -73,13 +73,13 @@ export default async function handler(req, res) {
         // Transform Open-Meteo data to our format
         const weatherData = {
             main: {
-                temp: response.data.current_weather.temperature
+                temp: response.data.current.temperature_2m
             },
             weather: [{
-                description: getWeatherDescription(response.data.current_weather.weathercode)
+                description: getWeatherDescription(response.data.current.weather_code)
             }],
             wind: {
-                speed: response.data.current_weather.windspeed
+                speed: response.data.current.wind_speed_10m
             }
         }
         
